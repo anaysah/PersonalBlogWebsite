@@ -1,0 +1,16 @@
+[project]
+name = "honestnote-blogging-application"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.10"
+dependencies = [
+    "django~=4.1.0",
+    "django-ckeditor>=6.7.3",
+    "django-cloudinary-storage>=0.3.0",
+    "fontawesomefree>=6.6.0",
+    "gunicorn>=23.0.0",
+    "pillow>=12.1.0",
+    "psycopg2-binary>=2.9.11",
+    "python-dotenv>=1.2.1",
+    "whitenoise>=6.11.0",
+]

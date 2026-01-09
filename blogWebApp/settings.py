@@ -11,9 +11,12 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
+import dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+dotenv.load_dotenv(BASE_DIR / ".env")
 
 
 # Quick-start development settings - unsuitable for production
@@ -23,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', "False").lower() in ["true", "1", "yes"]
+DEBUG = os.getenv('DEBUG', "False").lower() in ["true", "1", "yes", "on"]
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']  # Default for development
 # if not DEBUG :  # For production
@@ -88,20 +91,25 @@ WSGI_APPLICATION = 'blogWebApp.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
-    'default': {
+    'sqlite': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    },
+    'postgresql': {
         'ENGINE': "django.db.backends.postgresql_psycopg2",
         'HOST': os.environ.get('DATABASE_HOST'),
         'NAME': os.environ.get('DATABASE_NAME'),
         'USER': os.environ.get('DATABASE_USER'),
         'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
         'PORT': os.environ.get('DATABASE_PORT'),
+        'OPTIONS': {
+            'sslmode': os.environ.get('SSL_MODE', 'prefer'),
+        },
     }
 }
 
+DATABASE_ENGINE = os.environ.get('DEFAULT_DATABASE_ENGINE', 'sqlite')
+DATABASES['default'] = DATABASES[DATABASE_ENGINE]
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
